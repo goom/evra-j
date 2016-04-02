@@ -8,7 +8,7 @@ import java.util.regex.Pattern;
 
 public class Calc { 
 	static Random rand = new Random();
-	final static DecimalFormat format = new DecimalFormat("0.####");
+	final static DecimalFormat format = new DecimalFormat("0.######");
 	
 	public static double eval(String str) {
 		return eval(str, false);
@@ -45,11 +45,11 @@ public class Calc {
 				return x;
 			}
 
-				// Grammar:
-				// expression = term | expression `+` term | expression `-` term
-				// term = factor | term `*` factor | term `/` factor
-				// factor = `+` factor | `-` factor | `(` expression `)`
-				//        | number | functionName factor | factor `^` factor
+			// Grammar:
+			// expression = term | expression `+` term | expression `-` term
+			// term = factor | term `*` factor | term `/` factor
+			// factor = `+` factor | `-` factor | `(` expression `)`
+			//        | number | functionName factor | factor `^` factor
 
 			double parseExpression() {
 				double x = parseTerm();

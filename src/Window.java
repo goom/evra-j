@@ -12,9 +12,8 @@ import javax.swing.*;
 import javax.swing.text.*;
 import javax.swing.text.html.*;
 
-public class Window extends JFrame implements ActionListener {
-	protected static final String enterText = "enterText";
-	protected static final String nl = "\n";
+public class Window extends JFrame {
+	public Modes mode;
 	
 	private static JFrame f;
 	private static JTextField jtf;
@@ -28,29 +27,62 @@ public class Window extends JFrame implements ActionListener {
 	}
 
 	public Window() {
+		mode = Modes.MATH;
 		f = new JFrame("Evra");
 		f.setLayout(new BorderLayout());
 		f.setSize(600,600);
 		
 		jtf = new JTextField(30);
-		jtf.setActionCommand(enterText);
-		jtf.addActionListener(this);
 		
+		//handle enter button action for JTextField
+		jtf.addActionListener(new AbstractAction() {
+			public void actionPerformed(ActionEvent e) {
+				JTextField src = (JTextField) e.getSource();
+				send(jtf.getText());
+				jtf.setText("");
+			}
+		});
+		
+		//handle up and down keys for JTextField
+		InputMap iMap = jtf.getInputMap();
+		iMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_UP, 0), "up"); 
+		iMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_DOWN, 0), "down");
+		ActionMap aMap = jtf.getActionMap();
+		aMap.put("up", new AbstractAction() {
+			public void actionPerformed(ActionEvent e) {
+				Log.write("Up pressed.");
+			}
+		});
+		aMap.put("down", new AbstractAction() {
+			public void actionPerformed(ActionEvent e) {
+				Log.write("Down pressed.");
+			}
+		});
+		
+		//initiale the different panes i'll be using
 		spMain = new ScrollPane();
 		spTrack = new ScrollPane();
 		spTrack.setPreferredSize(new Dimension(150,600));
 		
+		//add panes to main JFrame
 		f.add(spMain, BorderLayout.CENTER);
 		f.add(jtf, BorderLayout.SOUTH);
 		
-		f.addWindowListener(new WindowAdapter() { //handle window close
+		//handle window close
+		f.addWindowListener(new WindowAdapter() { 
         	public void windowClosing(WindowEvent windowEvent) {
 	        	System.exit(0);
 			}        
 		});  
-		f.setVisible(true);
-		jtf.requestFocusInWindow();
-		spMain.clear();
+		
+		//final things to initialize
+		f.setVisible(true); //show window
+		jtf.requestFocusInWindow(); //make the JTextField the currently focused component
+		spMain.clear(); //clear the main text window, or set default text
+	}
+	
+	private void setMode(Modes m) {
+		mode = m;
 	}
 	
 	private void toggleTrack() {
@@ -93,10 +125,23 @@ public class Window extends JFrame implements ActionListener {
 						System.exit(0);
 						break;
 					case "track":
-						toggleTrack();
+						setMode(Modes.TRACK);
 						break;
+					case "math":
+						setMode(Modes.MATH);
+						break;	
 					default:
-						Log.warning("No such command: " + result[0] + "\n");
+						switch(mode) {
+							case TRACK:
+								//dispatch to track class
+								break;
+							case MATH:
+								Calc.eval(result[0], true);
+								break;
+							default:
+								Log.error("No mode or no known mode specified.");
+								break;
+						}
 						break;	
 				}
 			}
@@ -105,7 +150,11 @@ public class Window extends JFrame implements ActionListener {
 					case "math":
 						Calc.eval(result[1], true);
 						break;
+					case "track":
+						//dispatch result[1] to track class
+						break;
 					default:
+						Log.warning("Unknown command.");
 						break;
 				}
 			}
@@ -115,18 +164,11 @@ public class Window extends JFrame implements ActionListener {
 		}
 	}
 	
-	//Handle actions
-	public void actionPerformed(ActionEvent e) {
-		String c = e.getActionCommand();
-		if(c == enterText)
-		{
-			JTextField src = (JTextField) e.getSource();
-			send(src.getText());
-			src.setText("");
-		}
-	}
-	
 	public enum Handles {
 		MAIN, TRACK
+	}
+	
+	public enum Modes {
+		MATH, TRACK
 	}
 }
