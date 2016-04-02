@@ -85,6 +85,7 @@ public class Window extends JFrame implements ActionListener {
 	
 	//dispatch the commands to their handlers
 	private void send(String cmd) {
+	try {
 		String[] result = cmd.split(" ", 2);
 		if(result.length < 2) {
 			switch(result[0].toLowerCase()) {
@@ -111,7 +112,10 @@ public class Window extends JFrame implements ActionListener {
 					
 			}
 		}
-		
+	}
+	catch (RuntimeException ex) {
+		Log.error(ex.getLocalizedMessage());
+	}
 	}
 	
 	//Handle actions

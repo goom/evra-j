@@ -6,7 +6,7 @@ import java.text.DecimalFormat;
 import java.util.*;
 import java.util.regex.Pattern;
 
-public class Calc { //Works perfectly so far, need to change regurg from String to something that accepts colors or formatting (for min and max die rolls)
+public class Calc { 
 	static Random rand = new Random();
 	final static DecimalFormat format = new DecimalFormat("0.####");
 	
@@ -109,7 +109,7 @@ public class Calc { //Works perfectly so far, need to change regurg from String 
 					else if (func.equals("tan")) x = Math.tan(Math.toRadians(x));
 					else if (func.equals("d")) {
 						if(ch >= 0)
-							regurg = regurg.substring(0, regurg.length() - 1);
+							regurg = regurg.substring(0, regurg.length() - 1); //it ate a command after dice, don't want to print it yet
 						x = roll(x);
 						if(ch >= 0) regurg += (char)ch;
 					}

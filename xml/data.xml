@@ -26,7 +26,7 @@
     </Stat>
     <Stat id="HP">
       <Name>Health</Name>
-      <Value>1</Value>
+      <Value>10</Value>
     </Stat>
     <Stat id="MHP">
       <Name>Max Health</Name>
