@@ -53,9 +53,11 @@ public class Window extends JFrame implements ActionListener {
 		spMain.clear();
 	}
 	
-	private void enableTrack() {
+	private void toggleTrack() {
 		if(spTrack.getParent() == f.getContentPane()) {
-			Log.error("Track is already enabled.\n");
+			f.remove(spTrack);
+			f.repaint();
+			f.revalidate();
 		}
 		else {
 			f.add(spTrack, BorderLayout.EAST);
@@ -91,7 +93,7 @@ public class Window extends JFrame implements ActionListener {
 						System.exit(0);
 						break;
 					case "track":
-						enableTrack();
+						toggleTrack();
 						break;
 					default:
 						Log.warning("No such command: " + result[0] + "\n");
