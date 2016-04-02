@@ -30,7 +30,7 @@
     </Stat>
     <Stat id="MHP">
       <Name>Max Health</Name>
-      <Value>1</Value>
+      <Value>10</Value>
     </Stat>
     <Stat id="AC">
       <Name>Armor Class</Name>
