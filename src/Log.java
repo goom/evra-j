@@ -1,5 +1,6 @@
 package evra;
 
+import evra.TextPane;
 import evra.Window;
 
 import java.awt.*;
@@ -29,7 +30,7 @@ public class Log {
 				break;
 		}
 		
-		Window.insertText("<font color=white>" + x.toString() + "</font>");
+		Window.addText("<font color=white>" + x.toString() + "</font>", Window.Handles.MAIN);
 	}
 	
 	public static void error(String s) {

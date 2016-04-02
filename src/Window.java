@@ -2,6 +2,7 @@ package evra;
 
 import evra.math.Calc;
 import evra.Log;
+import evra.ScrollPane;
 
 import java.awt.*;
 import java.awt.event.*;
@@ -11,16 +12,14 @@ import javax.swing.*;
 import javax.swing.text.*;
 import javax.swing.text.html.*;
 
-
 public class Window extends JFrame implements ActionListener {
 	protected static final String enterText = "enterText";
 	protected static final String nl = "\n";
 	
 	private static JFrame f;
 	private static JTextField jtf;
-	private static HTMLDocument doc;
-	private static HTMLEditorKit kit;
-	private static JTextPane jtp;
+	private static ScrollPane spMain;
+	private static ScrollPane spTrack;
 
 
 	public static void main(String args[]) {
@@ -31,27 +30,17 @@ public class Window extends JFrame implements ActionListener {
 	public Window() {
 		f = new JFrame("Evra");
 		f.setLayout(new BorderLayout());
-		f.setSize(400,600);
+		f.setSize(600,600);
 		
 		jtf = new JTextField(30);
 		jtf.setActionCommand(enterText);
 		jtf.addActionListener(this);
 		
-		kit = new HTMLEditorKit();
-		doc = new HTMLDocument();
-		jtp = new JTextPane();
-		jtp.setEditorKit(kit);
-		jtp.setDocument(doc);
-		jtp.setEditable(false);
-		jtp.setFocusable(false);
-		jtp.setBackground(Color.black);
+		spMain = new ScrollPane();
+		spTrack = new ScrollPane();
+		spTrack.setPreferredSize(new Dimension(150,600));
 		
-		//Create the scroll area and add the text pane to it
-		JScrollPane scroller = new JScrollPane(jtp);
-		scroller.setWheelScrollingEnabled(true);
-		DefaultCaret caret = (DefaultCaret) jtp.getCaret(); //keep the scroll area at the bottom
-		caret.setUpdatePolicy(DefaultCaret.ALWAYS_UPDATE);
-		f.add(scroller, BorderLayout.CENTER);
+		f.add(spMain, BorderLayout.CENTER);
 		f.add(jtf, BorderLayout.SOUTH);
 		
 		f.addWindowListener(new WindowAdapter() { //handle window close
@@ -61,61 +50,67 @@ public class Window extends JFrame implements ActionListener {
 		});  
 		f.setVisible(true);
 		jtf.requestFocusInWindow();
-		clear();
+		spMain.clear();
 	}
 	
-	//clear all text in the JTextPane
-	private void clear() {
-		jtp.setText("");
-		insertText("<font color=white>Test</font>");
+	private void enableTrack() {
+		if(spTrack.getParent() == f.getContentPane()) {
+			Log.error("Track is already enabled.\n");
+		}
+		else {
+			f.add(spTrack, BorderLayout.EAST);
+			f.repaint();
+			f.revalidate();
+		}
 	}
 	
-	//Adding text to the JTP; used by Log
-	public static void insertText(String s) {
-		try {
-			kit.insertHTML(doc, doc.getLength(), s, 0, 0, null);
-		}
-		catch (BadLocationException ble) {
-			System.err.println("Couldn't insert line in JTextField.");
-		}
-		catch (IOException ioe) {
-			System.err.println("Incorrect HTML formatting in insertText()");
+	public static void addText(final String s, Handles h) {
+		switch(h) {
+			case MAIN:
+				spMain.insert(s);
+				break;
+			case TRACK:
+				spTrack.insert(s);
+				break;
 		}
 	}
 	
 	//dispatch the commands to their handlers
 	private void send(String cmd) {
-	try {
-		String[] result = cmd.split(" ", 2);
-		if(result.length < 2) {
-			switch(result[0].toLowerCase()) {
-				case "clear":
-				case "cls":
-					clear();
-					break;
-				case "exit":
-				case "quit":
-				case "q":
-					System.exit(0);
-					break;
-				default:
-					Log.warning("No such command: " + result[0] + "\n");
-					break;	
+		try {
+			String[] result = cmd.split(" ", 2);
+			if(result.length < 2) {
+				switch(result[0].toLowerCase()) {
+					case "clear":
+					case "cls":
+						spMain.clear();
+						break;
+					case "exit":
+					case "quit":
+					case "q":
+						System.exit(0);
+						break;
+					case "track":
+						enableTrack();
+						break;
+					default:
+						Log.warning("No such command: " + result[0] + "\n");
+						break;	
+				}
+			}
+			else {
+				switch(result[0].toLowerCase()) {
+					case "math":
+						Calc.eval(result[1], true);
+						break;
+					default:
+						break;
+				}
 			}
 		}
-		else {
-			switch(result[0].toLowerCase()) {
-				case "math":
-					Calc.eval(result[1], true);
-					break;
-				default:
-					
-			}
+		catch (RuntimeException ex) {
+			Log.error(ex.getLocalizedMessage());
 		}
-	}
-	catch (RuntimeException ex) {
-		Log.error(ex.getLocalizedMessage());
-	}
 	}
 	
 	//Handle actions
@@ -127,5 +122,9 @@ public class Window extends JFrame implements ActionListener {
 			send(src.getText());
 			src.setText("");
 		}
+	}
+	
+	public enum Handles {
+		MAIN, TRACK
 	}
 }
