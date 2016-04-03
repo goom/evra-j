@@ -40,6 +40,10 @@ public class Log {
 		write(s, Types.WARNING);
 	}
 	
+	public static void debug(String s) {
+		System.err.println(s);
+	}
+	
 	public enum Types {
 		ERROR, WARNING, NORMAL
 	}
