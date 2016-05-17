@@ -1,8 +1,8 @@
-package evra;
+package evra.gui;
 
-import evra.Handler;
 import evra.Log;
-import evra.Window;
+import evra.EvraMain;
+import evra.gui.GUIMain;
 
 import java.awt.*;
 import java.awt.event.*;
@@ -14,7 +14,7 @@ public class TextField extends JTextField {
 	public TextField() {		
 		this.addActionListener(new AbstractAction() {
 			@Override public void actionPerformed(ActionEvent e) {
-				new Handler(getText());
+				EvraMain.dispatch(getText());
 				setText("");
 			}
 		});
@@ -36,12 +36,12 @@ public class TextField extends JTextField {
 		ActionMap aMap = getActionMap();
 		aMap.put("up", new AbstractAction() {
 			@Override public void actionPerformed(ActionEvent e) {
-				Log.debug("Up pressed.");
+				Log.error("Up pressed.");
 			}
 		});
 		aMap.put("down", new AbstractAction() {
 			@Override public void actionPerformed(ActionEvent e) {
-				Log.debug("Down pressed.");
+				Log.error("Down pressed.");
 			}
 		});
 	}

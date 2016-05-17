@@ -1,10 +1,10 @@
-package evra;
+package evra.gui;
 
 import evra.math.Calc;
-import evra.Handler;
+import evra.EvraMain;
 import evra.Log;
-import evra.ScrollPane;
-import evra.TextField;
+import evra.gui.ScrollPane;
+import evra.gui.TextField;
 
 import java.awt.*;
 import java.awt.event.*;
@@ -14,19 +14,13 @@ import javax.swing.*;
 import javax.swing.text.*;
 import javax.swing.text.html.*;
 
-public class Window extends JFrame {
+public class GUIMain extends JFrame {
 	private static JFrame f;
 	private static TextField jtf;
 	private static ScrollPane spMain;
 	private static ScrollPane spTrack;
 
-	public static void main(String args[]) {
-		// Create an instance of the application
-		new Window();
-	}
-
-	public Window() {
-		Handler.setMode(Handler.Modes.MATH);
+	public GUIMain() {
 		f = new JFrame("Evra");
 		f.setLayout(new BorderLayout());
 		f.setSize(600,600);

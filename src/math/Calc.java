@@ -39,7 +39,7 @@ public class Calc {
 			double parse() {
 				eatChar();
 				double x = parseExpression();
-				if (pos < str.length()) throw new RuntimeException("Unexpected: " + (char)ch);
+				if (pos < str.length()) throw new RuntimeException("Incorrect formula. Unexpected: " + (char)ch);
 				
 				if (verbose) Log.write(regurg + " = " + format.format(x) + "\n");
 				return x;
@@ -115,7 +115,7 @@ public class Calc {
 					}
 					else throw new RuntimeException("Unknown function: " + func);
 				} else {
-					throw new RuntimeException("Unexpected: " + (char)ch);
+					throw new RuntimeException("Incorrect formula. Unexpected character: " + (char)ch);
 				}
 
 				eatSpace();
@@ -132,14 +132,10 @@ public class Calc {
 				for(int x = 0; x < dice; x++) {
 					cur = rand.nextInt((int)sides) + 1;
 					if(cur == sides) {
-						regurg += "<b><font color=green>";
-						regurg += Integer.toString(cur);
-						regurg += "</font></b>";
+						regurg += Log.green(Integer.toString(cur));
 					}
 					else if (cur == 1) {
-						regurg += "<b><font color=red>";
-						regurg += Integer.toString(cur);
-						regurg += "</font></b>";
+						regurg += Log.red(Integer.toString(cur));
 					}
 					else regurg += Integer.toString(cur);
 					total += cur;

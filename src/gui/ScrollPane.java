@@ -1,4 +1,4 @@
-package evra;
+package evra.gui;
 
 import java.awt.*;
 import java.io.*;

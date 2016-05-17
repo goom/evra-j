@@ -1,50 +1,74 @@
 package evra;
 
-import evra.TextPane;
-import evra.Window;
+import evra.gui.GUIMain;
+import evra.EvraMain;
 
 import java.awt.*;
 import javax.swing.text.*;
 import javax.swing.text.rtf.*;
 
 public class Log {
+	
+	public static final String ANSI_RESET = "\u001B[0m";
+	public static final String ANSI_BLACK = "\u001B[30m";
+	public static final String ANSI_RED = "\u001B[31m";
+	public static final String ANSI_GREEN = "\u001B[32m";
+	public static final String ANSI_YELLOW = "\u001B[33m";
+	public static final String ANSI_BLUE = "\u001B[34m";
+	public static final String ANSI_PURPLE = "\u001B[35m";
+	public static final String ANSI_CYAN = "\u001B[36m";
+	public static final String ANSI_WHITE = "\u001B[37m";
+	
 	public static void write(String s) {
 		write(s, Color.white);
 	}
 	public static void write(String s, Color color) {
-		write(s, color, Types.NORMAL);
-	}
-	public static void write(String s, Types t) {
-		write(s, Color.white, t);
-	}
-	public static void write(String s, Color color, Types t) {
 		StringBuilder x = new StringBuilder(s);
-		switch (t) {
-			case ERROR:
-				x.insert(0, "<font color=red>ERROR: </font>");
-				break;
-			case WARNING:
-				x.insert(0, "<font color=yellow>Warning: </font>");
-				break;
-			default:
-				break;
-		}
 		
-		Window.addText("<font color=white>" + x.toString() + "</font>", Window.Handles.MAIN);
+		if(EvraMain.isConsole())
+			System.out.println(x.toString()); 
+		else
+			GUIMain.addText(white(x.toString()), GUIMain.Handles.MAIN);
+			//GUIMain.addText(x.toString(), GUIMain.Handles.MAIN);
+	}
+	
+	public static String red(final String s) {
+		if(!EvraMain.isConsole()) {
+			String x = "<font color=red>" + s + "</font>";
+			return x;
+		}
+		else
+			return s;
+	}
+	
+	public static String blue(final String s) {
+		if(!EvraMain.isConsole()) {
+			String x = "<font color=blue>" + s + "</font>";
+			return x;
+		}
+		else
+			return s;
+	}
+	
+	public static String white(final String s) {
+		if(!EvraMain.isConsole()) {
+			String x = "<font color=white>" + s + "</font>";
+			return x;
+		}
+		else
+			return s;
+	}
+	
+	public static String green(final String s) {
+		if(!EvraMain.isConsole()) {
+			String x = "<font color=green>" + s + "</font>";
+			return x;
+		}
+		else
+			return s;
 	}
 	
 	public static void error(String s) {
-		write(s, Types.ERROR);
-	}
-	public static void warning(String s) {
-		write(s, Types.WARNING);
-	}
-	
-	public static void debug(String s) {
 		System.err.println(s);
-	}
-	
-	public enum Types {
-		ERROR, WARNING, NORMAL
 	}
 }

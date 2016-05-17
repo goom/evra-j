@@ -1,6 +1,6 @@
 package evra;
 
-import evra.Window;
+import evra.gui.GUIMain;
 
 class Tracker {
 	
