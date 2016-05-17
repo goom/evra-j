@@ -13,7 +13,7 @@ public class Calc {
 	public static double eval(String str) {
 		return eval(str, false);
 	}
-	public static double eval(String str, boolean verbose) {
+	public static double eval(final String str, boolean verbose) {
 		str.toLowerCase();
 		return new Object() {
 			int pos = -1, ch;
