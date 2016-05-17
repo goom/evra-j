@@ -6,7 +6,7 @@
     <property name="jar.dir"     value="${build.dir}/jar"/>
     <property name="xml.dir"     value="xml"/>
 
-    <property name="main-class"  value="evra.Window"/>
+    <property name="main-class"  value="evra.EvraMain"/>
 
     <target name="clean">
         <delete dir="${build.dir}"/>
@@ -29,6 +29,12 @@
 
     <target name="run" depends="jar">
         <java jar="${jar.dir}/${ant.project.name}.jar" fork="true"/>
+    </target>
+    
+    <target name="con" depends="jar">
+        <java jar="${jar.dir}/${ant.project.name}.jar" fork="true">
+            <arg line="-c"/>
+        </java>
     </target>
 
     <target name="clean-build" depends="clean,jar"/>
