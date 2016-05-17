@@ -31,10 +31,12 @@
         <java jar="${jar.dir}/${ant.project.name}.jar" fork="true"/>
     </target>
     
-    <target name="con" depends="jar">
-        <java jar="${jar.dir}/${ant.project.name}.jar" fork="true">
-            <arg line="-c"/>
-        </java>
+    <target name="runcon" depends="jar">
+        <exec executable="java">
+            <arg value="-jar"/>
+            <arg value="${jar.dir}/${ant.project.name}.jar"/>
+            <arg value="-c"/>
+        </exec>
     </target>
 
     <target name="clean-build" depends="clean,jar"/>
