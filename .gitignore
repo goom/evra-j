@@ -1,0 +1,15 @@
+#Compiled source
+*.com
+*.class
+
+#Packages
+*.jar
+
+#Other
+*.log
+Thumbs.db
+.con
+
+#Directory
+build/*
+
