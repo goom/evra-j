@@ -14,7 +14,7 @@
 
     <target name="compile">
         <mkdir dir="${classes.dir}"/>
-        <javac srcdir="${src.dir}" destdir="${classes.dir}"/>
+        <javac srcdir="${src.dir}" destdir="${classes.dir}" verbose="false"/>
     </target>
 
     <target name="jar" depends="compile">

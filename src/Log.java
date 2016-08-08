@@ -33,39 +33,23 @@ public class Log {
 	}
 	
 	public static String red(final String s) {
-		if(!EvraMain.isConsole()) {
-			String x = "<font color=red>" + s + "</font>";
-			return x;
-		}
-		else
-			return s;
+		String x = "<font color=red>" + s + "</font>";
+		return EvraMain.isConsole() ? s : x;
 	}
 	
 	public static String blue(final String s) {
-		if(!EvraMain.isConsole()) {
-			String x = "<font color=blue>" + s + "</font>";
-			return x;
-		}
-		else
-			return s;
+		String x = "<font color=blue>" + s + "</font>";
+		return EvraMain.isConsole() ? s : x;
 	}
 	
 	public static String white(final String s) {
-		if(!EvraMain.isConsole()) {
-			String x = "<font color=white>" + s + "</font>";
-			return x;
-		}
-		else
-			return s;
+		String x = "<font color=white>" + s + "</font>";
+		return EvraMain.isConsole() ? s : x;
 	}
 	
 	public static String green(final String s) {
-		if(!EvraMain.isConsole()) {
-			String x = "<font color=green>" + s + "</font>";
-			return x;
-		}
-		else
-			return s;
+		String x = "<font color=green>" + s + "</font>";
+		return EvraMain.isConsole() ? s : x;
 	}
 	
 	public static void error(String s) {
