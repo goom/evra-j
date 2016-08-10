@@ -3,7 +3,7 @@ package evra;
 import evra.Log;
 import evra.ConsoleProc;
 import evra.gui.GUIMain;
-import evra.math.Calc;
+import evra.math.Roll;
 import evra.testing.Test;
 
 public class EvraMain {
@@ -68,7 +68,7 @@ public class EvraMain {
 								//dispatch to track class
 								return;
 							case MATH:
-								Calc.eval(result[0], true);
+								Roll.eval(result[0], true);
 								return;
 							default:
 								Log.error("Unknown mode or unknown command.");
@@ -79,7 +79,7 @@ public class EvraMain {
 			else {
 				switch(result[0].toLowerCase()) {
 					case "math":
-						Calc.eval(result[1], true);
+						Roll.eval(result[1], true);
 						return;
 					case "track":
 						//dispatch result[1] to track class

@@ -10,4 +10,8 @@ public class Actor {
     public Actor(String n) {
         name = n;
     }
+
+    public String getName() {
+        return name;
+    }
 }

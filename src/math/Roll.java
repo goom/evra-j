@@ -1,19 +1,42 @@
 package evra.math;
 
 import evra.Log;
+import evra.actors.*;
 
 import java.text.DecimalFormat;
 import java.util.*;
 import java.util.regex.Pattern;
 
-public class Calc { 
+public class Roll { 
 	static Random rand = new Random();
 	final static DecimalFormat format = new DecimalFormat("0.######");
-	
-	public static double eval(String str) {
-		return eval(str, false);
+
+	public final Actor o;
+	public String s;
+
+	public Roll(String s) {
+		this.s = s;
+		o = null;
 	}
-	public static double eval(final String str, final boolean verbose) {
+
+	public Roll(String s, final Actor owner) {
+		o = owner;
+		this.s = s;
+	}
+
+	public double eval() {
+		return Roll.eval(s, false, o);
+	}
+	public static double eval(final String str, final Actor owner) {
+		return eval(str, false, owner);
+	}
+	public static double eval(String str) {
+		return eval(str, false, null);
+	}
+	public static double eval(final String str, boolean b) {
+		return eval(str, b, null);
+	}
+	public static double eval(final String str, final boolean verbose, final Actor owner) {
 		str.toLowerCase();
 		return new Object() {
 			int pos = -1, ch;
@@ -102,14 +125,27 @@ public class Calc {
 				} else if (ch >= 'a' && ch <= 'z') { // functions
 					while (ch >= 'a' && ch <= 'z') eatChar();
 					String func = str.substring(startPos, this.pos);
-					x = parseFactor();
+					if(func.equals("dex")) { //changes this to a comparison function in JSON, looking for abbreviations
+						//handle 'variables' that are in the command
+						//in our case, the variables will be values of func that we compare to stat and resource abbreviations
+						//we then obtain those values from the owner
+
+						//for testing purposes
+						x = 3;
+						/*if(owner == null) {
+							throw new RuntimException("Roll owner expected in eval()");
+						}*/
+					}
+					else
+						x = parseFactor();
 					if (func.equals("sqrt")) x = Math.sqrt(x);
 					else if (func.equals("sin")) x = Math.sin(Math.toRadians(x));
 					else if (func.equals("cos")) x = Math.cos(Math.toRadians(x));
 					else if (func.equals("tan")) x = Math.tan(Math.toRadians(x));
 					else if (func.equals("d")) {
 						if(ch >= 0)
-							regurg = regurg.substring(0, regurg.length() - 1); //it ate a command after dice, don't want to print it yet
+							regurg = regurg.substring(0, regurg.length() - 1); 
+							//it ate a command after dice, don't want to print it yet
 						x = roll(x);
 						if(ch >= 0) regurg += (char)ch;
 					}

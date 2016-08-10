@@ -38,8 +38,8 @@ class Stats {
             return;
 
         index = resourceList.indexOf(replacer);
-        replacer.modifyVal(cur);
-        replacer.modifyMax(max);
+        replacer.curVal += cur;
+        replacer.maxVal += max;
         resourceList.set(index, replacer);
     }
 
@@ -64,7 +64,7 @@ class Stats {
             return;
 
         index = statList.indexOf(replacer);
-        replacer.modify(val);
+        replacer.value += amount;
         statList.set(index, replacer);
     }
 
@@ -75,14 +75,14 @@ class Stats {
             return;
 
         index = statList.indexOf(replacer);
-        replacer.setVal(val);
+        replacer.value = val;
         statList.set(index, replacer);
     }
 
-    public class Stat {
+    private class Stat {
         public String statName;
         public String statAbbr;
-        private int value;
+        public int value;
         public static final int MAXVAL = 50;
 
         public Stat(String n, String ab, int val) {
@@ -90,93 +90,19 @@ class Stats {
             statAbbr = ab;
             value = val;
         }
-
-        public Stat() {
-            statName = "UNDEFINED";
-            statAbbr = "UNID";
-            value = 10;
-        }
-
-        public int getModifier() {
-            return (int) (value - 10) / 2;
-        }
-
-        public int getVal() {
-            return value;
-        }
-
-        public void setVal(int val) {
-            if(val < 0)
-                val = 0;
-            if(val > MAXVAL)
-                val = MAXVAL;
-
-            value = val;
-        }
-
-        public void modify(int amount) {
-            setVal(value + amount);
-        }
     }
 
-    public class Resource {
+    private class Resource {
         public String resourceName;
         public String resourceAbbr;
-        private int curVal;
-        private int maxVal;
+        public int curVal;
+        public int maxVal;
 
         public Resource(String n, String ab, int cur, int max) {
             resourceName = n;
             resourceAbbr = ab;
             curVal = cur;
             maxVal = max;
-        }
-
-        public Resource(String n, String ab, int val) {
-            resourceName = n;
-            resourceAbbr = ab;
-            curVal = maxVal = val;
-        }
-
-        public Resource() {
-            resourceName = "UNDEFINED";
-            resourceAbbr = "UNID";
-            curVal = maxVal = 10;
-        }
-
-        public int getCur() {
-            return curVal;
-        }
-
-        public int getMax() {
-            return maxVal;
-        }
-
-        public void setCur(int val) {
-            if(val > maxVal)
-                curVal = maxVal;
-            else if(val < 0)
-                curVal = 0;
-            else
-                curVal = val;
-        }
-
-        public void modifyVal(int amount) {
-            setCur(curVal + amount);
-        }
-
-        public void modifyMax(int amount) {
-            setMax(maxVal + amount);
-        }
-
-        public void setMax(int val) {
-            if(val < 0)
-                val = 0;
-
-            if(curVal > val)
-                curVal = val;
-
-            maxVal = val;
         }
     }
 }
