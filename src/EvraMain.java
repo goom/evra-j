@@ -4,6 +4,7 @@ import evra.Log;
 import evra.ConsoleProc;
 import evra.gui.GUIMain;
 import evra.math.Calc;
+import evra.testing.Test;
 
 public class EvraMain {
 	public static boolean CONSOLE = false;
@@ -58,6 +59,9 @@ public class EvraMain {
 					case "math":
 						setMode(Modes.MATH);
 						return;	
+					case "test":
+						new Test();
+						return;
 					default:
 						switch(mode) {
 							case TRACK:

@@ -5,8 +5,8 @@ import evra.Log;
 import java.util.ArrayList;
 
 class Stats {
-    public ArrayList<Stat> statList;
-    public ArrayList<Resource> resourceList;
+    private ArrayList<Stat> statList;
+    private ArrayList<Resource> resourceList;
 
     public Stats () {
         statList = new ArrayList<Stat>();
@@ -57,6 +57,17 @@ class Stats {
         return null;
     }
 
+    public void modifyStat(String ref, int amount) {
+        int index;
+        Stat replacer = getStat(ref);
+        if(replacer == null)
+            return;
+
+        index = statList.indexOf(replacer);
+        replacer.modify(val);
+        statList.set(index, replacer);
+    }
+
     public void setStat(String ref, int val) {
         int index;
         Stat replacer = getStat(ref);
@@ -68,7 +79,7 @@ class Stats {
         statList.set(index, replacer);
     }
 
-    class Stat {
+    public class Stat {
         public String statName;
         public String statAbbr;
         private int value;

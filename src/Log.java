@@ -26,7 +26,7 @@ public class Log {
 		StringBuilder x = new StringBuilder(s);
 		
 		if(EvraMain.isConsole())
-			System.out.print(x.toString()); 
+			System.out.println(x.toString()); 
 		else
 			GUIMain.addText(white(x.toString()), GUIMain.Handles.MAIN);
 			//GUIMain.addText(x.toString(), GUIMain.Handles.MAIN);
