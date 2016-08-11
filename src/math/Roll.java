@@ -136,6 +136,22 @@ public class Roll {
 							throw new RuntimException("Roll owner expected in eval()");
 						}*/
 					}
+					else if (func.equals("hid")) {
+						//high rolls
+						if(eatChar('(')) x = parseHiRoll();
+						else
+							throw new RuntimeException("Improperly formatted hid (High Dice Roll), needs parethesis");
+						if(!eatChar(')'))
+							throw new RuntimeException("No ending parentheses");							
+					}
+					else if (func.equals("lod")) {
+						//low rolls
+						if(eatChar('(')) x = parseLoRoll();
+						else
+							throw new RuntimeException("Improperly formatted lod (Low Dice Roll), needs parethesis");
+						if(!eatChar(')'))
+							throw new RuntimeException("No ending parentheses");
+					}
 					else
 						x = parseFactor();
 					if (func.equals("sqrt")) x = Math.sqrt(x);
@@ -179,6 +195,31 @@ public class Roll {
 				}
 				regurg += ")";
 				return (double)total;
+			}
+
+			double parseHiRoll() {
+				ArrayList<Integer> list = new ArrayList<Integer>();
+				int numDice = (int) parseFactor();
+				eatSpace();
+				eatChar(',');
+				eatSpace();
+				int numSides = (int) parseFactor();
+				eatSpace();
+				eatChar(',');
+				eatSpace();
+				int numTaking = (int) parseFactor();
+
+				for(int i = 0; i < numDice; i++) 
+					list.add((int) roll(numSides));
+				list.sort(null);
+				for(int a : list)
+					Log.write(Integer.toString(a));
+
+				return 1;	
+			}
+
+			double parseLoRoll() {
+				return 1;
 			}
 		}.parse();
 	}
