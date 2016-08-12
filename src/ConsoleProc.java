@@ -16,7 +16,7 @@ class ConsoleProc {
 				s = br.readLine();
 			}
 			catch(IOException e) {
-				
+				e.printStackTrace();
 			}
 			EvraMain.dispatch(s);
 		}
