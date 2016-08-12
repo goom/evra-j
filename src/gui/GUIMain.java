@@ -1,6 +1,6 @@
 package evra.gui;
 
-import evra.math.Calc;
+import evra.math.Roll;
 import evra.EvraMain;
 import evra.Log;
 import evra.gui.ScrollPane;

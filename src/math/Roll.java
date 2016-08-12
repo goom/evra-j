@@ -27,6 +27,9 @@ public class Roll {
 	public double eval() {
 		return Roll.eval(s, false, o);
 	}
+	public double eval(boolean b) {
+		return Roll.eval(s, b, o);
+	}
 	public static double eval(final String str, final Actor owner) {
 		return eval(str, false, owner);
 	}
@@ -36,15 +39,16 @@ public class Roll {
 	public static double eval(final String str, boolean b) {
 		return eval(str, b, null);
 	}
-	public static double eval(final String str, final boolean verbose, final Actor owner) {
+	public static double eval(final String str, boolean v, final Actor owner) {
 		str.toLowerCase();
 		return new Object() {
 			int pos = -1, ch;
 			String regurg = new String("");
+			boolean verbose = v;
 
 			void eatChar() {
 				ch = (++pos < str.length()) ? str.charAt(pos) : -1;
-				if (ch >= 0) regurg += (char)ch;
+				if (ch >= 0 && verbose) regurg += (char)ch;
 			}
 
 			boolean eatChar(int ch) {
@@ -100,9 +104,9 @@ public class Roll {
 					eatSpace();
 					if(eatChar('d')) {
 						double y = parseFactor();
-						if(ch >= 0) regurg = regurg.substring(0, regurg.length() - 1);
+						if(ch >= 0 && verbose) regurg = regurg.substring(0, regurg.length() - 1);
 						y = roll(y, x);
-						if(ch >= 0) regurg += (char)ch;
+						if(ch >= 0 && verbose) regurg += (char)ch;
 						return y;
 					}
 					else return x;
@@ -138,34 +142,45 @@ public class Roll {
 					}
 					else if (func.equals("hid")) {
 						//high rolls
-						if(eatChar('(')) x = parseHiRoll();
+						boolean store = verbose;
+						if(eatChar('(')) {
+							verbose = false;
+							x = parseMultiRoll(true);
+							verbose = store;
+						}
 						else
-							throw new RuntimeException("Improperly formatted hid (High Dice Roll), needs parethesis");
+							throw new RuntimeException("Improperly formatted hid (High Dice Roll), needs paretheses");
 						if(!eatChar(')'))
-							throw new RuntimeException("No ending parentheses");							
+							throw new RuntimeException("No ending parentheses");			
 					}
 					else if (func.equals("lod")) {
 						//low rolls
-						if(eatChar('(')) x = parseLoRoll();
+						boolean store = verbose;
+						if(eatChar('(')) {
+							verbose = false;
+							x = parseMultiRoll(false);
+							verbose = store;
+						}
 						else
 							throw new RuntimeException("Improperly formatted lod (Low Dice Roll), needs parethesis");
 						if(!eatChar(')'))
 							throw new RuntimeException("No ending parentheses");
 					}
-					else
-						x = parseFactor();
-					if (func.equals("sqrt")) x = Math.sqrt(x);
-					else if (func.equals("sin")) x = Math.sin(Math.toRadians(x));
-					else if (func.equals("cos")) x = Math.cos(Math.toRadians(x));
-					else if (func.equals("tan")) x = Math.tan(Math.toRadians(x));
-					else if (func.equals("d")) {
-						if(ch >= 0)
-							regurg = regurg.substring(0, regurg.length() - 1); 
-							//it ate a command after dice, don't want to print it yet
-						x = roll(x);
-						if(ch >= 0) regurg += (char)ch;
+					else {
+							x = parseFactor();
+						if (func.equals("sqrt")) x = Math.sqrt(x);
+						else if (func.equals("sin")) x = Math.sin(Math.toRadians(x));
+						else if (func.equals("cos")) x = Math.cos(Math.toRadians(x));
+						else if (func.equals("tan")) x = Math.tan(Math.toRadians(x));
+						else if (func.equals("d")) {
+							if(ch >= 0 && verbose)
+								regurg = regurg.substring(0, regurg.length() - 1); 
+								//it ate a command after dice, don't want to print it yet
+							x = roll(x);
+							if(ch >= 0 && verbose) regurg += (char)ch;
+						}
+						else throw new RuntimeException("Unknown function: " + func);
 					}
-					else throw new RuntimeException("Unknown function: " + func);
 				} else {
 					throw new RuntimeException("Incorrect formula. Unexpected character: " + (char)ch);
 				}
@@ -180,24 +195,26 @@ public class Roll {
 			}
 			double roll(double sides, double dice) {
 				int total = 0, cur = 0;
-				regurg += "(";
+				if(verbose) regurg += "(";
 				for(int x = 0; x < dice; x++) {
 					cur = rand.nextInt((int)sides) + 1;
-					if(cur == sides) {
-						regurg += Log.green(Integer.toString(cur));
+					if(verbose) {
+						if(cur == sides) {
+							regurg += Log.green(Integer.toString(cur));
+						}
+						else if (cur == 1) {
+							regurg += Log.red(Integer.toString(cur));
+						}
+						else regurg += Integer.toString(cur);
 					}
-					else if (cur == 1) {
-						regurg += Log.red(Integer.toString(cur));
-					}
-					else regurg += Integer.toString(cur);
 					total += cur;
-					if((x + 1) < dice) regurg += ", ";
+					if((x + 1) < dice && verbose) regurg += ", ";
 				}
-				regurg += ")";
+				if(verbose) regurg += ")";
 				return (double)total;
 			}
 
-			double parseHiRoll() {
+			double parseMultiRoll(boolean high) {
 				ArrayList<Integer> list = new ArrayList<Integer>();
 				int numDice = (int) parseFactor();
 				eatSpace();
@@ -208,14 +225,43 @@ public class Roll {
 				eatChar(',');
 				eatSpace();
 				int numTaking = (int) parseFactor();
+				
+				if(ch >= 0) regurg = regurg.substring(0, regurg.length() - 1);
+
+				if(numDice < 1 || numSides < 1 || numTaking < 1)
+					throw new RuntimeException("Improper hid/lod() arguments, need to be >= 1");
 
 				for(int i = 0; i < numDice; i++) 
 					list.add((int) roll(numSides));
 				list.sort(null);
-				for(int a : list)
-					Log.write(Integer.toString(a));
+				
+				int total = 0;
+				int iter = high ? list.size() : 0;
+				Iterator<Integer> i = list.iterator();
+				if(!high) regurg += "(";
+				while(i.hasNext()) {
+					int z = i.next();
+					if(iter <= numTaking && high) {
+						if(iter == numTaking) regurg += "(";
+						total += z;
+					}
+					if(z == numSides) {
+						regurg += Log.green(Integer.toString(z));
+					}
+					else if (z == 1) {
+						regurg += Log.red(Integer.toString(z));
+					}
+					else regurg += Integer.toString(z);
+					if(iter < numTaking && !high) {
+						total += z;
+						if(iter == (numTaking - 1)) regurg += ")";
+					}
+					if(i.hasNext()) regurg += ",";
+					iter += high ? -1 : 1;
+				}
+				regurg += high ? "))" : ")";
 
-				return 1;	
+				return (double) total;
 			}
 
 			double parseLoRoll() {

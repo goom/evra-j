@@ -10,7 +10,7 @@ public class Test {
     public ArrayList<String> list;
 
     public Test() {
-        Calc c = new Calc("3d20");
+        Roll c = new Roll("3d20");
         c.eval(true);
      }
 }
