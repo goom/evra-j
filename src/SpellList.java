@@ -2,6 +2,7 @@ package evra;
 
 import evra.Log;
 import java.util.*;
+import java.io.*;
 
 public class SpellList {
     private static ArrayList<Spell> list;
@@ -10,7 +11,7 @@ public class SpellList {
         list =  new ArrayList<Spell>();
     }
 
-    public static void addSpell(String n, String comp, String school,
+    public static void add(String n, String comp, String school,
                         String range, String time, String desc,
                         String cl, String dur, int lvl) {
         Spell add = new Spell();
@@ -25,5 +26,25 @@ public class SpellList {
         add.level = lvl;
 
         list.add(add);
+    }
+    public static void add(Spell sp) {   
+        list.add(sp);
+    }
+
+    public static int size() {
+        return list.size();
+    }
+
+    public static void addID() {
+        String inp = "";
+        Console c = System.console();
+        for(Spell x : list) {
+            Log.writel(x.name);
+            Log.write("ID: ");
+            inp = c.readLine();
+            int i = list.indexOf(x);
+            x.id = inp;
+            list.set(i, x);
+        }
     }
 }

@@ -8,9 +8,9 @@ import java.util.ArrayList;
 import java.math.*;
 
 public class Test {
-    public ArrayList<String> list;
+    public ArrayList<Spell> list;
 
     public Test() {
-        JImport.loadSpells();
+        SpellList.addID();
      }
 }

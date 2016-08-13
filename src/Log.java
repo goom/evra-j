@@ -26,10 +26,22 @@ public class Log {
 		StringBuilder x = new StringBuilder(s);
 		
 		if(EvraMain.isConsole())
-			System.out.println(x.toString()); 
+			System.out.print(x.toString()); 
 		else
 			GUIMain.addText(white(x.toString()), GUIMain.Handles.MAIN);
 			//GUIMain.addText(x.toString(), GUIMain.Handles.MAIN);
+	}
+
+	public static void writel(String s) {
+		writel(s, Color.white);
+	}
+	public static void writel(String s, Color color) {
+		StringBuilder x = new StringBuilder(s);
+
+		if(EvraMain.isConsole())
+			System.out.println(x.toString());
+		else
+			GUIMain.addText(white(x.toString()) + '\n', GUIMain.Handles.MAIN);
 	}
 	
 	public static String red(final String s) {

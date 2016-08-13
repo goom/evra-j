@@ -46,9 +46,9 @@ public class JImport {
     public static void loadSpells() {
         JSONArray jar = jo.getJSONArray("spell");
         Iterator<Object> iter = jar.iterator();
-        while(iter.hasNext()) {
+        Log.write("Loading spells...");
+        for(;iter.hasNext();) {
             JSONObject ob = (JSONObject) iter.next();
-            SpellList.init();
             Spell sp = new Spell();
             String s = "";
             int x = 0;
@@ -71,8 +71,9 @@ public class JImport {
                 else
                     sp.description = ob.getString("text");
             }
+            SpellList.add(new Spell(sp));
         }
-        Log.write("Done writing spells");
+        Log.writel(SpellList.size() + " spells loaded.");
     }
 
     public static String byteString(long bytes, boolean si) {

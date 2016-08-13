@@ -13,7 +13,6 @@ public class EvraMain {
 	public static void main(String args[]) {
 		mode = Modes.MATH;
 		sp = new SpellList();
-		JImport.init();
 		if(args.length > 0) {
 			if(args[0].equals("-c")) {
 				//do console stuff
@@ -64,6 +63,12 @@ public class EvraMain {
 						return;	
 					case "test":
 						new Test();
+						return;
+					case "initiate":
+					case "init":
+						SpellList.init();
+						JImport.init();
+						JImport.loadSpells();
 						return;
 					default:
 						switch(mode) {
