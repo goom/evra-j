@@ -3,16 +3,16 @@ package evra.json;
 import org.json.*;
 import java.io.*;
 import java.util.*;
-import evra.Log;
+import evra.*;
 
 public class JImport {
-    String data = "";
-    JSONObject jo;
+    static String data;
+    static JSONObject jo;
 
-    public JImport() {
-        //incomplete
+    public static void init() {
         try {
-            InputStream is = this.getClass().getResourceAsStream("/import.xml");
+            data = "";
+            InputStream is = JImport.class.getResourceAsStream("/import.json");
             ByteArrayOutputStream result = new ByteArrayOutputStream();
             byte[] buffer = new byte[1024];
             int length;
@@ -21,18 +21,58 @@ public class JImport {
             }
 
             data = result.toString("UTF-8");
-            int s = data.getBytes().length;
-            Log.write("Size of data is: " + byteString(s, true));
-            jo = XML.toJSONObject(result.toString("UTF-8"));
-            //System.out.print(jo.toString(5));
+            jo = new JSONObject(data);
+            //int s = data.getBytes().length;
+            //Log.write("Size of data is: " + byteString(s, true));
+            //jo = XML.toJSONObject(result.toString("UTF-8"));
 
-            BufferedWriter bw = new BufferedWriter(new FileWriter("import.json"));
-            bw.write(jo.toString(5));
-            bw.close();
+            //delete/unload other stuff
+            data = "";
+            is = null;
+            result = null;
+            length = 0;
+            buffer = null;
+
+
+            //BufferedWriter bw = new BufferedWriter(new FileWriter("import.json"));
+            //bw.write(jo.toString(5));
+            //bw.close();
         }
         catch(IOException e) {
             e.printStackTrace();
         }
+    }
+
+    public static void loadSpells() {
+        JSONArray jar = jo.getJSONArray("spell");
+        Iterator<Object> iter = jar.iterator();
+        while(iter.hasNext()) {
+            JSONObject ob = (JSONObject) iter.next();
+            SpellList.init();
+            Spell sp = new Spell();
+            String s = "";
+            int x = 0;
+            if(ob.has("name")) sp.name = ob.getString("name");
+            if(ob.has("classes")) sp.classes = ob.getString("classes");
+            if(ob.has("range")) sp.range = ob.getString("range");
+            if(ob.has("components")) sp.components = ob.getString("components");
+            if(ob.has("school")) sp.school = ob.getString("school");
+            if(ob.has("time")) sp.time = ob.getString("time");
+            if(ob.has("duration")) sp.duration = ob.getString("duration");
+            if(ob.has("level")) sp.level = ob.getInt("level");
+            if(ob.has("text")) {
+                JSONArray ar = ob.optJSONArray("text");
+                s = "";
+                if(ar != null) {
+                    Iterator<Object> siter = ar.iterator();
+                    while(siter.hasNext()) s += (String) siter.next();
+                    sp.description = s;
+                }
+                else
+                    sp.description = ob.getString("text");
+            }
+        }
+        Log.write("Done writing spells");
     }
 
     public static String byteString(long bytes, boolean si) {

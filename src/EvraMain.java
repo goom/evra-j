@@ -1,16 +1,19 @@
 package evra;
 
-import evra.Log;
-import evra.ConsoleProc;
+import evra.*;
 import evra.gui.GUIMain;
 import evra.math.Roll;
 import evra.testing.Test;
+import evra.json.JImport;
 
 public class EvraMain {
 	public static boolean CONSOLE = false;
 	public static Modes mode = Modes.MAIN;
+	public static SpellList sp;
 	public static void main(String args[]) {
 		mode = Modes.MATH;
+		sp = new SpellList();
+		JImport.init();
 		if(args.length > 0) {
 			if(args[0].equals("-c")) {
 				//do console stuff
