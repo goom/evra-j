@@ -8,12 +8,44 @@ import org.json.*;
 
 public class Spells {
     private static JSONObject spells;
+    private static ArrayList<String> query;
 
     public static void init() {
         Log.write("Loading spells...");
         spells = JImport.load("/spells.json");
         Log.writel(spells.length() + " spells loaded.");
+        query = new ArrayList<String>();
     }
+
+    public static boolean query(String s) {
+        Iterator<String> i = spells.keys();
+        JSONObject jo = new JSONObject();
+        String id = "";
+        while(i.hasNext()) {
+            id = i.next();
+            jo = spells.getJSONObject(id);
+            String name = jo.optString("name");
+            if(name.toLowerCase().contains(s.toLowerCase())) {
+                query.add(id);
+                Log.writel(id + ": " + name);
+            }
+        }
+        if(query.isEmpty()) {
+            Log.writel("No results.");
+            return false;
+        }
+        else return true;
+    }
+
+    public static Spell followUp(String s) {
+        if(query.isEmpty())
+            throw new RuntimeException("Spells.followUp() ran without a valid query");
+
+        if(!query.contains(s)) Log.error("Query follow-up ID: " + s + " not in query... Attempting to pull spell anyways.");
+        query = new ArrayList<String>();
+        return getFromID(s);
+    }
+
 
     public static Spell getFromID(String id) {
         JSONObject jo = spells.optJSONObject(id);

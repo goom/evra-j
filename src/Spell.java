@@ -30,4 +30,16 @@ public class Spell {
         duration = s.duration;
         level = s.level;
     }
+
+    public static void write(Spell s) {
+        Log.writel("Name: " + s.name);
+        Log.writel("Duration: " + s.duration);
+        Log.writel("School: " + s.school);
+        Log.writel("Range: " + s.range);
+        Log.writel("Casting Time: " + s.time);
+        Log.writel("Classes: " + s.classes);
+        Log.writel("Level: " + s.level);
+        Log.writel("Components: " + s.components);
+        Log.writel("Description: " + s.description);
+    }
 }

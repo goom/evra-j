@@ -9,6 +9,7 @@ import evra.json.JImport;
 public class EvraMain {
 	public static boolean CONSOLE = false;
 	public static Modes mode = Modes.MAIN;
+	private static boolean search = false;
 	public static void main(String args[]) {
 		mode = Modes.MATH;
 		if(args.length > 0) {
@@ -59,6 +60,9 @@ public class EvraMain {
 					case "math":
 						setMode(Modes.MATH);
 						return;	
+					case "search": 
+						setMode(Modes.SEARCH);
+						return;
 					case "test":
 						new Test();
 						return;
@@ -77,6 +81,16 @@ public class EvraMain {
 							case MATH:
 								Roll.eval(result[0], true);
 								return;
+							case SEARCH:
+								if(!search) {
+									search = Spells.query(result[0]);
+								}
+								else {
+									Spell sp = Spells.followUp(result[0]);
+									Spell.write(sp);
+									search = false;
+								}
+								return;
 							default:
 								Log.error("Unknown mode or unknown command.");
 								return;
@@ -90,6 +104,18 @@ public class EvraMain {
 						return;
 					case "track":
 						//dispatch result[1] to track class
+						return;
+					case "search":
+						//can only search for spells atm
+						if(!search) {
+							search = Spells.query(result[1]);
+							setMode(Modes.SEARCH);
+						}
+						else {
+							Spell sp = Spells.followUp(result[1]);
+							Spell.write(sp);
+							search = false;
+						}
 						return;
 					default:
 						Log.error("Unknown command.");
@@ -114,6 +140,6 @@ public class EvraMain {
 	}
 	
 	public enum Modes {
-		MAIN, MATH, TRACK
+		MAIN, MATH, TRACK, SEARCH
 	}
 }
