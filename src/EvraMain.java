@@ -9,10 +9,8 @@ import evra.json.JImport;
 public class EvraMain {
 	public static boolean CONSOLE = false;
 	public static Modes mode = Modes.MAIN;
-	public static SpellList sp;
 	public static void main(String args[]) {
 		mode = Modes.MATH;
-		sp = new SpellList();
 		if(args.length > 0) {
 			if(args[0].equals("-c")) {
 				//do console stuff
@@ -66,9 +64,10 @@ public class EvraMain {
 						return;
 					case "initiate":
 					case "init":
-						SpellList.init();
-						JImport.init();
-						JImport.loadSpells();
+						Spells.init();
+						return;
+					case "export":
+						Spells.save();	
 						return;
 					default:
 						switch(mode) {

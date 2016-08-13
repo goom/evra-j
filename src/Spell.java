@@ -28,6 +28,6 @@ public class Spell {
         description = s.description;
         classes = s.classes;
         duration = s.duration;
-    level = s.level;
+        level = s.level;
     }
 }
