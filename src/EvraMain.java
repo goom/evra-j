@@ -1,6 +1,5 @@
 package evra;
 
-import evra.*;
 import evra.gui.GUIMain;
 import evra.math.Roll;
 import evra.testing.Test;
@@ -73,7 +72,7 @@ public class EvraMain {
 						return;
 					case "initiate":
 					case "init":
-						spells = new Database("spells", new Spell());
+						spells = new Database("spells");
 						spells.setQueryString("name");
 						initiated = true;
 						return;
@@ -93,7 +92,7 @@ public class EvraMain {
 									search = spells.query(result[0]);
 								}
 								else {
-									Spell sp = new Spell(spells.followUp(result[0]));
+									EObject sp = new EObject(spells.followUp(result[0]));
 									sp.write();
 									search = false;
 								}
@@ -119,7 +118,7 @@ public class EvraMain {
 							setMode(Modes.SEARCH);
 						}
 						else {
-							Spell sp = new Spell(spells.followUp(result[1]));
+							EObject sp = new EObject(spells.followUp(result[1]));
 							sp.write();
 							search = false;
 						}

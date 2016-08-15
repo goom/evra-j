@@ -10,16 +10,14 @@ public class Database {
     private static ArrayList<String> query;
     public String name;
     private String queryString;
-    private Object ob;
 
-    public Database(String name, Object ob) {
+    public Database(String name) {
         Log.write("Loading " + name + "...");
         this.name = name;
         data = JImport.load("/" + name + ".json");
         Log.writel(data.length() + " objects loaded.");
         query = new ArrayList<String>();
         queryString = "name";
-        this.ob = ob;
     }
 
     public Database() {
@@ -70,8 +68,9 @@ public class Database {
         int z = 0;
         JSONObject jo = new JSONObject();
         Iterator<String> i = data.keys();
-        while(i.hasNext())
+        while(i.hasNext()) {
             jo.put(Integer.toString(z++), data.getJSONObject(i.next()));
+        }
         
         data = jo;
     }
