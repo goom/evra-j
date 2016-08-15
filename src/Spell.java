@@ -1,5 +1,7 @@
 package evra;
 
+import org.json.*;
+
 public class Spell {
     public String name;
     public String components;
@@ -31,15 +33,28 @@ public class Spell {
         level = s.level;
     }
 
-    public static void write(Spell s) {
-        Log.writel("Name: " + s.name);
-        Log.writel("Duration: " + s.duration);
-        Log.writel("School: " + s.school);
-        Log.writel("Range: " + s.range);
-        Log.writel("Casting Time: " + s.time);
-        Log.writel("Classes: " + s.classes);
-        Log.writel("Level: " + s.level);
-        Log.writel("Components: " + s.components);
-        Log.writel("Description: " + s.description);
+    public Spell(JSONObject o) {
+        name = o.optString("name");
+        components = o.optString("components");
+        school = o.optString("school");
+        id = o.optString("id");
+        time = o.optString("time");
+        description = o.optString("description");
+        duration = o.optString("duration");
+        classes = o.optString("classes");
+        level = o.optInt("level");
+        range = o.optString("range");
+    }
+
+    public void write() {
+        Log.writel("Name: " + name);
+        Log.writel("Duration: " + duration);
+        Log.writel("School: " + school);
+        Log.writel("Range: " + range);
+        Log.writel("Casting Time: " + time);
+        Log.writel("Classes: " + classes);
+        Log.writel("Level: " + level);
+        Log.writel("Components: " + components);
+        Log.writel("Description: " + description);
     }
 }

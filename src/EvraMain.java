@@ -4,12 +4,17 @@ import evra.*;
 import evra.gui.GUIMain;
 import evra.math.Roll;
 import evra.testing.Test;
-import evra.json.JImport;
+import evra.database.*;
 
 public class EvraMain {
 	public static boolean CONSOLE = false;
 	public static Modes mode = Modes.MAIN;
 	private static boolean search = false;
+
+	public static Database spells;
+	public static Database items;
+	public static boolean initiated = false;
+
 	public static void main(String args[]) {
 		mode = Modes.MATH;
 		if(args.length > 0) {
@@ -68,10 +73,12 @@ public class EvraMain {
 						return;
 					case "initiate":
 					case "init":
-						Spells.init();
+						spells = new Database("spells", new Spell());
+						spells.setQueryString("name");
+						initiated = true;
 						return;
 					case "export":
-						Spells.save();	
+						spells.save();	
 						return;
 					default:
 						switch(mode) {
@@ -83,11 +90,11 @@ public class EvraMain {
 								return;
 							case SEARCH:
 								if(!search) {
-									search = Spells.query(result[0]);
+									search = spells.query(result[0]);
 								}
 								else {
-									Spell sp = Spells.followUp(result[0]);
-									Spell.write(sp);
+									Spell sp = new Spell(spells.followUp(result[0]));
+									sp.write();
 									search = false;
 								}
 								return;
@@ -108,12 +115,12 @@ public class EvraMain {
 					case "search":
 						//can only search for spells atm
 						if(!search) {
-							search = Spells.query(result[1]);
+							search = spells.query(result[1]);
 							setMode(Modes.SEARCH);
 						}
 						else {
-							Spell sp = Spells.followUp(result[1]);
-							Spell.write(sp);
+							Spell sp = new Spell(spells.followUp(result[1]));
+							sp.write();
 							search = false;
 						}
 						return;
