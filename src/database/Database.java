@@ -36,6 +36,12 @@ public class Database {
         //empty
     }
 
+    public void writeOrder() {
+        for(String a : queryOrder) {
+            Log.write(a + ", ");
+        }
+    }
+
     public void setQueryString(String q) {
         queryString = q;
     }
@@ -92,10 +98,39 @@ public class Database {
     }
 
     public JSONObject getFromID(String s) {
-        return data.optJSONObject(s);
+        return data.getJSONObject(s);
     }
 
     public JSONObject getData() {
         return data;
+    }
+
+    public void write(JSONObject eo) {
+        Iterator<String> iter = eo.keys();
+        String s = "";
+        String write = "";
+        for(String a : queryOrder) {
+            if(eo.opt(a) != null) {
+                Object o = eo.opt(a);
+                if(o instanceof JSONArray) {
+                    JSONArray ja = new JSONArray(eo.optJSONArray(s));
+                    Iterator<Object> subIter = ja.iterator();
+                    Log.write(a + " ");
+                    while(subIter.hasNext()) {
+                        Log.writel(subIter.next().toString());
+                    }
+                }
+                else {
+                    Log.writel(a + ": " + eo.opt(a).toString());
+                }
+                eo.remove(a);
+                iter = eo.keys();
+            }
+        }
+
+        while(iter.hasNext()) {
+            s = iter.next();
+            Log.writel(s + ": " + eo.opt(s).toString());
+        }
     }
 }

@@ -10,7 +10,7 @@ import java.math.*;
 
 public class Test {
     public Test() {
-        testingOne();
+        EvraMain.spells.writeOrder();
      }
 
      private void testingOne() { //INCOMPLETE

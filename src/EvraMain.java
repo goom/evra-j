@@ -91,8 +91,7 @@ public class EvraMain {
 									search = spells.query(result[0]);
 								}
 								else {
-									EObject sp = new EObject(spells.followUp(result[0]));
-									sp.write();
+									spells.write(spells.followUp(result[0]));
 									search = false;
 								}
 								return;
@@ -117,8 +116,7 @@ public class EvraMain {
 							setMode(Modes.SEARCH);
 						}
 						else {
-							EObject sp = new EObject(spells.followUp(result[1]));
-							sp.write();
+							spells.write(spells.followUp(result[1]));
 							search = false;
 						}
 						return;
