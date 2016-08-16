@@ -10,6 +10,7 @@ public class Database {
     private ArrayList<String> query;
     public String name;
     private String queryString;
+    private ArrayList<String> queryOrder;
 
     public Database(String name) {
         Log.write("Loading " + name + "...");
@@ -17,7 +18,18 @@ public class Database {
         data = JImport.load("/" + name + ".json");
         Log.writel(data.length() + " objects loaded.");
         query = new ArrayList<String>();
-        queryString = "name"; //default
+        queryOrder = new ArrayList<String>();
+        if(data.has("query")) {
+            JSONArray ja = data.getJSONArray("query");
+            Iterator<Object> iter = ja.iterator();
+            while(iter.hasNext()) {
+                queryOrder.add(iter.next().toString());
+            }
+            data.remove("query");
+            queryString = queryOrder.get(0);
+        }
+        else
+            queryString = "name"; //default
     }
 
     public Database() {
@@ -26,6 +38,10 @@ public class Database {
 
     public void setQueryString(String q) {
         queryString = q;
+    }
+
+    public ArrayList<String> order() {
+        return queryOrder;
     }
 
     public boolean query(String s) {
