@@ -47,6 +47,7 @@ public class GUIMain extends JFrame {
 		//final things to initialize
 		f.setVisible(true); //show window
 		spMain.clear(); //clear the main text window, or set default text
+		EvraMain.initiate();
 	}
 	
 	public static void togglePane(Handles h) {

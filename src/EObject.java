@@ -6,7 +6,7 @@ import java.io.*;
 
 public class EObject {
     public String id;
-    public JSONObject data;
+    private JSONObject data;
 
     public EObject() {
         id = "";
@@ -25,11 +25,26 @@ public class EObject {
             throw new RuntimeException("EObject " + data.optString("name") + " passed JSON without an 'id' tag.");
     }
 
+    public JSONObject getData() {
+        return data;
+    }
+
     public void write() {
         Iterator<String> iter = data.keys();
         String s = "";
+        String write = "";
         while(iter.hasNext()) {
             s = iter.next();
+            if(s.equals("text") || s.equals("description")) {
+                if(data.opt(s) instanceof JSONArray) {
+                    JSONArray ja = new JSONArray(data.opt(s));
+                    Iterator<Object> subIter = ja.iterator();
+                    Log.write(s + " ");
+                    while(subIter.hasNext()) {
+                        Log.writel(subIter.next().toString());
+                    }
+                }
+            }
             Log.writel(s + ": " + data.opt(s).toString());
         }
     }

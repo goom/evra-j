@@ -6,8 +6,8 @@ import java.util.*;
 import evra.*;
 
 public class Database {
-    private static JSONObject data;
-    private static ArrayList<String> query;
+    private JSONObject data;
+    private ArrayList<String> query;
     public String name;
     private String queryString;
 
@@ -17,7 +17,7 @@ public class Database {
         data = JImport.load("/" + name + ".json");
         Log.writel(data.length() + " objects loaded.");
         query = new ArrayList<String>();
-        queryString = "name";
+        queryString = "name"; //default
     }
 
     public Database() {
@@ -79,17 +79,7 @@ public class Database {
         return data.optJSONObject(s);
     }
 
-    public void save() {
-        if(!EvraMain.initiated)
-            throw new RuntimeException("Database not initiated.");
-        //Writes the current JSON to a spells.json file
-        try {
-            BufferedWriter bw = new BufferedWriter(new FileWriter(name + ".json"));
-            bw.write(data.toString(5));
-            bw.close();
-        }
-        catch(IOException e) {
-            e.printStackTrace();
-        }
+    public JSONObject getData() {
+        return data;
     }
 }

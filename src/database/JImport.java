@@ -32,6 +32,33 @@ public class JImport {
         return null;
     }
 
+    public static JSONObject arrayToObject(String s) {
+        JSONArray ja = load("/import.json").getJSONArray(s);
+        if(ja == null) 
+            throw new RuntimeException("arrayToObject failed, array not found");
+        JSONObject jo = new JSONObject();
+        Iterator i = ja.iterator();
+        int x = 0;
+        while(i.hasNext()) {
+            jo.put(Integer.toString(x++), i.next());
+        }
+
+        Log.writel("Converted " + x + " items to objects.");
+        return jo;
+    }
+
+    public static void save(String name, JSONObject jo) {
+        //Writes the current JSON to a spells.json file
+        try {
+            BufferedWriter bw = new BufferedWriter(new FileWriter(name + ".json"));
+            bw.write(jo.toString(5));
+            bw.close();
+        }
+        catch(IOException e) {
+            e.printStackTrace();
+        }
+    }
+
     public static String byteString(long bytes, boolean si) {
         int unit = si ? 1000 : 1024;
 

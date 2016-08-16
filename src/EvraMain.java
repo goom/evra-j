@@ -12,6 +12,7 @@ public class EvraMain {
 
 	public static Database spells;
 	public static Database items;
+	public static Database monsters;
 	public static boolean initiated = false;
 
 	public static void main(String args[]) {
@@ -37,6 +38,13 @@ public class EvraMain {
 	
 	public static boolean isConsole() {
 		return CONSOLE;
+	}
+
+	public static void initiate() {
+		spells = new Database("spells");
+		items = new Database("items");
+		monsters = new Database("monsters");
+		initiated = true;
 	}
 	
 	public static void dispatch(final String cmd) {
@@ -69,15 +77,6 @@ public class EvraMain {
 						return;
 					case "test":
 						new Test();
-						return;
-					case "initiate":
-					case "init":
-						spells = new Database("spells");
-						spells.setQueryString("name");
-						initiated = true;
-						return;
-					case "export":
-						spells.save();	
 						return;
 					default:
 						switch(mode) {
@@ -122,6 +121,9 @@ public class EvraMain {
 							sp.write();
 							search = false;
 						}
+						return;
+					case "export":
+						JImport.save(result[1], JImport.arrayToObject(result[1]));
 						return;
 					default:
 						Log.error("Unknown command.");

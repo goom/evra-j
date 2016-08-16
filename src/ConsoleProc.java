@@ -10,6 +10,7 @@ class ConsoleProc {
 	public ConsoleProc() {
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 		String s = new String();
+		EvraMain.initiate();
 		while(true) { //main console loop for input
 			System.out.print("> ");
 			try {
