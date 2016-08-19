@@ -10,12 +10,12 @@ import java.math.*;
 
 public class Test {
     public Test() {
-        EvraMain.spells.writeOrder();
+        //nada
      }
 
      private void testingOne() { //INCOMPLETE
          //This will help convert the "Rarity: " tags in the items JSON to key:value
-         JSONObject jo = EvraMain.items.getData();
+         JSONObject jo = EvraMain.getDB("items").getData();
          JSONObject newJo = new JSONObject();
          JSONObject joIter = new JSONObject();
          JSONArray ja = new JSONArray();

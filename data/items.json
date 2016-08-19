@@ -1,4 +1,5 @@
 {
+    "query": ["name", "type","weight","dmgType","source","text"],
      "1214": {
           "name": "Yew Wand",
           "weight": 1,

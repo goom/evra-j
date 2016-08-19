@@ -52,7 +52,7 @@ public class Database {
 
     public boolean query(String s) {
         if(!EvraMain.initiated) 
-            throw new RuntimeException("Database hasn't been initated.");
+            throw new RuntimeException("Database hasn't been initiated.");
         Iterator<String> i = data.keys();
         JSONObject jo = new JSONObject();
         String id = "";

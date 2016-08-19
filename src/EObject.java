@@ -30,22 +30,23 @@ public class EObject {
     }
 
     public void write() {
+        //Object writes itself, but it doesn't know what order it should be written in 
+        //so it writes in an arbitrary order, thanks to JSON being unordered
         Iterator<String> iter = data.keys();
         String s = "";
         String write = "";
         while(iter.hasNext()) {
             s = iter.next();
-            if(s.equals("text") || s.equals("description")) {
-                if(data.opt(s) instanceof JSONArray) {
-                    JSONArray ja = new JSONArray(data.opt(s));
-                    Iterator<Object> subIter = ja.iterator();
-                    Log.write(s + " ");
-                    while(subIter.hasNext()) {
-                        Log.writel(subIter.next().toString());
-                    }
+            if(data.opt(s) instanceof JSONArray) {
+                JSONArray ja = new JSONArray(data.opt(s));
+                Iterator<Object> subIter = ja.iterator();
+                Log.write(s + " ");
+                while(subIter.hasNext()) {
+                    Log.writel(subIter.next().toString());
                 }
             }
-            Log.writel(s + ": " + data.opt(s).toString());
+            else
+                Log.writel(s + ": " + data.opt(s).toString());
         }
     }
 }

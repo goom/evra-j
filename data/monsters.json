@@ -1,4 +1,5 @@
 {
+    "query":["name","cr","type","size","alignment","hp","ac","str","dex","con","int","wis","cha","trait","action"],
      "0": {
           "wis": 12,
           "ac": 12,

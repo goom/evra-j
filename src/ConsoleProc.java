@@ -12,7 +12,7 @@ class ConsoleProc {
 		String s = new String();
 		EvraMain.initiate();
 		while(true) { //main console loop for input
-			System.out.print("> ");
+			Log.write(EvraMain.getModeString() + "> ");
 			try {
 				s = br.readLine();
 			}

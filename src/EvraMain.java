@@ -1,18 +1,16 @@
 package evra;
 
 import evra.gui.GUIMain;
-import evra.math.Roll;
+import evra.proc.*;
 import evra.testing.Test;
 import evra.database.*;
+import java.util.*;
 
 public class EvraMain {
 	public static boolean CONSOLE = false;
 	public static Modes mode = Modes.MAIN;
-	private static boolean search = false;
 
-	public static Database spells;
-	public static Database items;
-	public static Database monsters;
+	public static ArrayList<Database> dbs;
 	public static boolean initiated = false;
 
 	public static void main(String args[]) {
@@ -41,9 +39,10 @@ public class EvraMain {
 	}
 
 	public static void initiate() {
-		spells = new Database("spells");
-		items = new Database("items");
-		monsters = new Database("monsters");
+		dbs = new ArrayList<Database>();
+		dbs.add(new Database("spells"));
+		dbs.add(new Database("items"));
+		dbs.add(new Database("monsters"));
 		initiated = true;
 	}
 	
@@ -82,21 +81,23 @@ public class EvraMain {
 						switch(mode) {
 							case TRACK:
 								//dispatch to track class
+								//new TrackProc(result[0]);
 								return;
 							case MATH:
-								Roll.eval(result[0], true);
+								new MathProc(result[0]);
 								return;
 							case SEARCH:
-								if(!search) {
+								/*if(!search) {
 									search = spells.query(result[0]);
 								}
 								else {
 									spells.write(spells.followUp(result[0]));
 									search = false;
-								}
+								}*/
+								new SearchProc(result[0]);
 								return;
 							default:
-								Log.error("Unknown mode or unknown command.");
+								Log.error("Unknown mode.");
 								return;
 						}
 				}
@@ -104,28 +105,41 @@ public class EvraMain {
 			else {
 				switch(result[0].toLowerCase()) {
 					case "math":
-						Roll.eval(result[1], true);
+						new MathProc(result[1]);
 						return;
 					case "track":
 						//dispatch result[1] to track class
+						//new TrackProc(result[1]);
 						return;
 					case "search":
 						//can only search for spells atm
-						if(!search) {
+						/*if(!search) {
 							search = spells.query(result[1]);
-							setMode(Modes.SEARCH);
 						}
 						else {
 							spells.write(spells.followUp(result[1]));
 							search = false;
-						}
+						}*/
+						new SearchProc(result[1]);
 						return;
 					case "export":
 						JImport.save(result[1], JImport.arrayToObject(result[1]));
 						return;
 					default:
-						Log.error("Unknown command.");
-						return;
+						switch(mode) {
+							case MATH:
+								new MathProc(cmd);
+								return;
+							case TRACK:
+								//new TrackProc(cmd);
+								return;
+							case SEARCH:
+								new SearchProc(cmd);
+								return;
+							default:
+								Log.error("Unknown mode.");
+								return;
+						}
 				}
 			}
 		}
@@ -143,6 +157,34 @@ public class EvraMain {
 	
 	public static Modes getMode() {
 		return mode;
+	}
+
+	public static String getModeString() {
+		switch (getMode()) {
+			case MATH:
+				return "Math";
+			case TRACK:
+				return "Track";
+			case SEARCH:
+				return "Search";
+			default:
+				return "None";
+		}
+	}
+
+	public static Database getDB(String s) {
+		for(Database x : dbs) {
+			if(x.name.equals(s))
+				return x;
+		}
+
+		return null;
+	}
+
+	public static void listDB() {
+		for(Database x : dbs) {
+			Log.writel(x.name);
+		}
 	}
 	
 	public enum Modes {
