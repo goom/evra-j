@@ -10,6 +10,7 @@ class ScrollPane extends JScrollPane {
 	private HTMLDocument doc;
 	private HTMLEditorKit kit;
 	private JTextPane jtp;
+	private Element prevElem;
 	
 	public ScrollPane() {
 		kit = new HTMLEditorKit();
@@ -20,6 +21,7 @@ class ScrollPane extends JScrollPane {
 		jtp.setEditable(false);
 		jtp.setFocusable(false);
 		jtp.setBackground(Color.black);
+		prevElem = doc.getDefaultRootElement();
 		
 		this.setViewportView(jtp);
 		this.setWheelScrollingEnabled(true);
@@ -33,7 +35,7 @@ class ScrollPane extends JScrollPane {
 	
 	public void insert(String s) {
 		try {
-			kit.insertHTML(doc, doc.getLength(), s, 0, 0, null);
+			kit.insertHTML(doc, doc.getLength() - 2, s, 0, 0, null);
 		}
 		catch (BadLocationException ble) {
 			System.err.println("Couldn't insert line in JTextPane.");

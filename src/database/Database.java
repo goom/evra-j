@@ -106,22 +106,22 @@ public class Database {
     }
 
     public void write(JSONObject eo) {
-        Iterator<String> iter = eo.keys();
+        Iterator<String> iter = eo.keys();  
         String s = "";
         String write = "";
         for(String a : queryOrder) {
             if(eo.opt(a) != null) {
                 Object o = eo.opt(a);
                 if(o instanceof JSONArray) {
-                    JSONArray ja = new JSONArray(eo.optJSONArray(s));
-                    Iterator<Object> subIter = ja.iterator();
-                    Log.write(a + " ");
-                    while(subIter.hasNext()) {
-                        Log.writel(subIter.next().toString());
-                    }
+                    Log.writel(a.toUpperCase() + ": ");
+                    writeArray((JSONArray) o, 1);
+                }
+                else if(o instanceof JSONObject) {
+                    Log.writel(a.toUpperCase() + ": ");
+                    writeObject((JSONObject) o, 1);
                 }
                 else {
-                    Log.writel(a + ": " + eo.opt(a).toString());
+                    Log.writel(a.toUpperCase() + ": " + eo.opt(a).toString());
                 }
                 eo.remove(a);
                 iter = eo.keys();
@@ -130,7 +130,63 @@ public class Database {
 
         while(iter.hasNext()) {
             s = iter.next();
-            Log.writel(s + ": " + eo.opt(s).toString());
+            Object o = eo.opt(s);
+            if(o instanceof JSONArray) {
+                Log.writel(s.toUpperCase() + ": ");
+                writeArray((JSONArray) o, 1);
+            }
+            else if(o instanceof JSONObject) {
+                Log.writel(s.toUpperCase() + ": ");
+                writeObject((JSONObject) o, 1);
+            }
+            else {
+                Log.writel(s.toUpperCase() + ": " + o.toString());
+            }
+        }
+    }
+
+    private void writeArray(JSONArray ja, int indent) {
+        Iterator<Object> subIter = ja.iterator();
+        while(subIter.hasNext()) {
+            Object o = subIter.next();
+            if(o instanceof JSONArray) {
+                writeArray((JSONArray) o, indent+1);
+            }
+            else if(o instanceof JSONObject) {
+                writeObject((JSONObject) o, indent+1);
+            }
+            else {
+                for(int i = 0; i < indent; i++)
+                    Log.write("-");
+                Log.writel(o.toString());
+            }
+        }
+    }
+
+    private void writeObject(JSONObject jo, int indent) {
+        Iterator<String> iter = jo.keys();  
+        String s = "";
+        int i;
+        while(iter.hasNext()) {
+            s = iter.next();
+            Object o = jo.opt(s);
+            if(o instanceof JSONArray) {
+                for(i = 0; i < indent; i++)
+                    Log.write("-");
+                Log.writel(s.toUpperCase() + ": ");
+                writeArray((JSONArray) o, indent+1);
+            }
+            else if(o instanceof JSONObject) {
+                for(i = 0; i < indent; i++)
+                    Log.write("-");
+                Log.writel(s.toUpperCase() + ": ");
+                writeObject((JSONObject) o, indent+1);
+            }
+            else {
+                for(i = 0; i < indent; i++)
+                    Log.write("-");
+                Log.writel(s.toUpperCase() + ": " + o.toString());
+            }
         }
     }
 }

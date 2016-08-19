@@ -1,5 +1,6 @@
 {
-    "query":["name","cr","type","size","alignment","hp","ac","str","dex","con","int","wis","cha","trait","action"],
+    "query":["name","cr","type","size","alignment","hp","ac","str","dex","con","int","wis","cha",
+    "save","speed","resist","immune","conditionimmune","skill","languages","trait","action"],
      "0": {
           "wis": 12,
           "ac": 12,
