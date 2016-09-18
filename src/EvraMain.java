@@ -11,6 +11,7 @@ public class EvraMain {
 	public static Modes mode = Modes.MAIN;
 
 	public static ArrayList<Database> dbs;
+	public static ArrayList<PlayerClass> classes;
 	public static boolean initiated = false;
 
 	public static void main(String args[]) {
@@ -43,6 +44,8 @@ public class EvraMain {
 		dbs.add(new Database("spells"));
 		dbs.add(new Database("items"));
 		dbs.add(new Database("monsters"));
+
+		classes = PlayerClass.importAllFromJSON();
 		initiated = true;
 	}
 	

@@ -10,10 +10,10 @@ import java.math.*;
 
 public class Test {
     public Test() {
-        //nada
+        TestingTwo();
      }
 
-     private void testingOne() { //INCOMPLETE
+     private void rarityTags() { //complete
          //This will help convert the "Rarity: " tags in the items JSON to key:value
          JSONObject jo = EvraMain.getDB("items").getData();
          JSONObject newJo = new JSONObject();
@@ -54,5 +54,68 @@ public class Test {
          }
 
          JImport.save("newItems", newJo);
+     }
+
+     public void autolevelFormat() {
+         JSONObject j = JImport.load("classes.json");
+         Iterator<String> jIter = j.keys();
+         while(jIter.hasNext()) { //loop through each class
+            JSONArray ja = j.optJSONObject(jIter.next()).optJSONArray("autolevel");
+            Iterator jaIter = ja.iterator();
+            if(ja == null) throw new RuntimeException("Null JSONArray in autolevelFormat()");
+            while(jaIter.hasNext()) { //iterate through each feature of the class
+                JSONObject subJ = (JSONObject) jaIter.next();
+                if(subJ == null) throw new RuntimeException("Null JSONOBject in autolevelFormat");
+
+                if(subJ.has("slots")) { //format spell slots
+
+                }
+                else { //format 'features'
+                    if(subJ.opt("feature") instanceof JSONObject) {
+                        //handle it when its an object
+                        JSONObject f = subJ.getJSONObject("feature");
+                        JSONObject rebuild = new JSONObject();
+                        Iterator<String> fIter = f.keys();
+                        String fKey = "";
+                        while(f.hasNext()) {
+                            fKey = f.next();
+                            rebuild.put(fKey, f.get(fKey));
+                        }
+                        rebuild.put("level", subJ.get("level"));
+                    }
+                    else if(subJ.opt("feature") instance of JSONArray) {
+                        //handle when its an array
+                        //not sure if I want the features to be in an array, or each feature a seperate object...
+                    }
+                    else throw new RuntimeException("Object 'feature' is not JSONArray or JSONObject in autolevelFormat");
+                }
+            }
+         }
+     }
+
+     private void TestingTwo() {
+        TestClass ts = new TestClass();
+        Log.writel(ts.s);
+        TestingTwoPlus(ts);
+        Log.writel(ts.s);
+     }
+
+     private void TestingTwoPlus(TestClass ts) {
+         //ts.setS("Changed.");
+         ts = new TestClass();
+         ts.setS("Inside function.");
+         Log.writel(ts.s);
+     }
+
+     private class TestClass {
+         String s;
+
+         TestClass() {
+             s = "Hello.";
+         }
+
+         public void setS(String s) {
+             this.s = s;
+         }
      }
 }
