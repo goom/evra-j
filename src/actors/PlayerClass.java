@@ -3,6 +3,7 @@ package evra.actors;
 import evra.*;
 import org.json.*;
 import java.util.*;
+import evra.database.*;
 
 public class PlayerClass {
     JSONObject jo;
@@ -82,11 +83,11 @@ public class PlayerClass {
 
     public static ArrayList<PlayerClass> importAllFromJSON() {
         //open the file and return an array with all the classes to EvraMain
-        ArrayList<PlayerClass> r = new ArrayList<JSONObject>();
+        ArrayList<PlayerClass> r = new ArrayList<PlayerClass>();
         JSONObject j = JImport.load("classes.json");
         Iterator<String> jIter = j.keys();
         while(jIter.hasNext()) { //iterate through each class
-            r.add(new PlayerClass(jIter.next()));
+            r.add(new PlayerClass(j.optJSONObject(jIter.next())));
         }
 
         return r;

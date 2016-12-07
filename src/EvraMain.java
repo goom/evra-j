@@ -4,6 +4,7 @@ import evra.gui.GUIMain;
 import evra.proc.*;
 import evra.testing.Test;
 import evra.database.*;
+import evra.actors.*;
 import java.util.*;
 
 public class EvraMain {
@@ -45,7 +46,7 @@ public class EvraMain {
 		dbs.add(new Database("items"));
 		dbs.add(new Database("monsters"));
 
-		classes = PlayerClass.importAllFromJSON();
+		//classes = PlayerClass.importAllFromJSON();
 		initiated = true;
 	}
 	

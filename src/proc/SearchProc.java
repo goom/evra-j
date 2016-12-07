@@ -21,6 +21,14 @@ public class SearchProc {
                     setMode(Search.BASE);
                     Log.writel("Canceling search.");
                     return;
+                case "help":
+                    Log.writel("Available commands in SEARCH mode:");
+                    Log.writel("list - lists available databases");
+                    Log.writel("db <database name> - load the named database");
+                    Log.writel("cancel - cancels the current search");
+                    Log.writel("search <query> - Searching current database for your query");
+                    Log.writel("If an above command is not given, will attempt to search with given text");
+                    return;
                 default:
                     if(mode == Search.BASE) {
                         boolean found = currentDB.query(cmd);
@@ -38,6 +46,7 @@ public class SearchProc {
             switch(results[0].toLowerCase()) {
                 case "db":
                     currentDB = EvraMain.getDB(results[1]);
+                    Log.writel("Loaded " + results[1] + " database.");
                     if(currentDB == null)
                         Log.error("No such database.");
                     return;

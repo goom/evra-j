@@ -77,13 +77,13 @@ public class Test {
                         JSONObject rebuild = new JSONObject();
                         Iterator<String> fIter = f.keys();
                         String fKey = "";
-                        while(f.hasNext()) {
-                            fKey = f.next();
+                        while(fIter.hasNext()) {
+                            fKey = fIter.next();
                             rebuild.put(fKey, f.get(fKey));
                         }
                         rebuild.put("level", subJ.get("level"));
                     }
-                    else if(subJ.opt("feature") instance of JSONArray) {
+                    else if(subJ.opt("feature") instanceof JSONArray) {
                         //handle when its an array
                         //not sure if I want the features to be in an array, or each feature a seperate object...
                     }
