@@ -1,6 +1,5 @@
 package evra;
 
-import evra.gui.GUIMain;
 import evra.actors.*;
 
 class Tracker {

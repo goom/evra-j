@@ -1,11 +1,7 @@
 package evra;
 
-import evra.gui.GUIMain;
+import evra.gui.GuiMain;
 import evra.EvraMain;
-
-import java.awt.*;
-import javax.swing.text.*;
-import javax.swing.text.rtf.*;
 
 public class Log {
 	
@@ -20,47 +16,40 @@ public class Log {
 	public static final String ANSI_WHITE = "\u001B[37m";
 	
 	public static void write(String s) {
-		write(s, Color.white);
-	}
-	public static void write(String s, Color color) {
 		StringBuilder x = new StringBuilder(s);
 		
 		if(EvraMain.isConsole())
 			System.out.print(x.toString()); 
 		else
-			GUIMain.addText(white(x.toString()), GUIMain.Handles.MAIN);
-			//GUIMain.addText(x.toString(), GUIMain.Handles.MAIN);
+			EvraMain.gui.addText(white(x.toString()));
 	}
 
 	public static void writel(String s) {
-		writel(s, Color.white);
-	}
-	public static void writel(String s, Color color) {
 		StringBuilder x = new StringBuilder(s);
 
 		if(EvraMain.isConsole())
 			System.out.println(x.toString());
 		else
-			GUIMain.addText(white(x.toString()) + '\n', GUIMain.Handles.MAIN);
+			EvraMain.gui.addText(white(x.toString()) + "<br>");
 	}
 	
 	public static String red(final String s) {
-		String x = "<font color=red>" + s + "</font>";
+		String x = "<font color=\"red\">" + s + "</font>";
 		return EvraMain.isConsole() ? s : x;
 	}
 	
 	public static String blue(final String s) {
-		String x = "<font color=blue>" + s + "</font>";
+		String x = "<font color=\"blue\">" + s + "</font>";
 		return EvraMain.isConsole() ? s : x;
 	}
 	
 	public static String white(final String s) {
-		String x = "<font color=white>" + s + "</font>";
+		String x = "<font color=\"white\">" + s + "</font>";
 		return EvraMain.isConsole() ? s : x;
 	}
 	
 	public static String green(final String s) {
-		String x = "<font color=green>" + s + "</font>";
+		String x = "<font color=\"green\">" + s + "</font>";
 		return EvraMain.isConsole() ? s : x;
 	}
 	

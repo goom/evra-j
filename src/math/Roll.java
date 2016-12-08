@@ -68,7 +68,7 @@ public class Roll {
 				double x = parseExpression();
 				if (pos < str.length()) throw new RuntimeException("Incorrect formula. Unexpected: " + (char)ch);
 				
-				if (verbose) Log.write(regurg + " = " + format.format(x) + "\n");
+				if (verbose) Log.writel(regurg + " = " + format.format(x));
 				return x;
 			}
 

@@ -1,6 +1,7 @@
 package evra;
 
-import evra.gui.GUIMain;
+//import evra.gui.GUIMain;
+import evra.gui.GuiMain;
 import evra.proc.*;
 import evra.testing.Test;
 import evra.database.*;
@@ -9,6 +10,7 @@ import java.util.*;
 
 public class EvraMain {
 	public static boolean CONSOLE = false;
+	public static GuiMain gui;
 	public static Modes mode = Modes.MAIN;
 
 	public static ArrayList<Database> dbs;
@@ -32,7 +34,12 @@ public class EvraMain {
 		else {
 			Log.error("Evra started in GUI mode.");
 			CONSOLE = false;
-			new GUIMain();
+			//For the old interface using Swing and AWT
+			//new GUIMain();
+
+			//New interface using JavaFX
+			gui = new GuiMain();
+			gui.launchGui(args);
 		}
 	}
 	
@@ -58,7 +65,8 @@ public class EvraMain {
 					case "clear":
 					case "cls":
 						if(!CONSOLE)
-							GUIMain.clear(GUIMain.Handles.MAIN);
+							//GUIMain.clear(GUIMain.Handles.MAIN);  --depreciated
+							EvraMain.gui.clear();
 						else
 							Log.error("Command disabled in console mode.");
 						return;
