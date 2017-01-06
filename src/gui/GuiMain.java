@@ -10,6 +10,7 @@ import javafx.stage.Stage;
 import javafx.scene.web.WebView;
 import javafx.geometry.*;
 import evra.EvraMain;
+import evra.Log;
 
 public class GuiMain extends Application {
     public void launchGui(String[] args) {
@@ -71,5 +72,9 @@ public class GuiMain extends Application {
     public void addText(String s) {
         sb.append(s);
         update();
+    }
+
+    public void setTitle(String s) {
+        Log.error("setTitle is currently broken, need to learn to get the stage.");
     }
 }

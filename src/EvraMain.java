@@ -157,7 +157,7 @@ public class EvraMain {
 		}
 		catch (RuntimeException ex) {
 			if(!CONSOLE)
-				Log.write(Log.red("Error: ") + ex.getLocalizedMessage());
+				Log.writel(Log.red("Error: ") + ex.getLocalizedMessage());
 			else
 				Log.error(ex.getLocalizedMessage());
 		}
@@ -165,6 +165,7 @@ public class EvraMain {
 	
 	public static void setMode(Modes m) {
 		mode = m;
+		if(gui != null) gui.setTitle("Evra - " + getModeString());
 	}
 	
 	public static Modes getMode() {

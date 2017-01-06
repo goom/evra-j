@@ -1,2 +1,5 @@
 Need to reformat classes.json:
 -The autolevel array should be an array with objects containing all the subobjects/arrays and the level, rather than an object called 'feature' with an object 'level'.
+
+Need to set the TextField as the initially selected field, and add up/down arrow hotkeys for command history.
+Also need to look into modifying the search results to use HTML for readability

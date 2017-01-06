@@ -10,7 +10,7 @@ import java.math.*;
 
 public class Test {
     public Test() {
-        TestingTwo();
+        Log.error("No current test case.");
      }
 
      private void rarityTags() { //complete
@@ -90,32 +90,6 @@ public class Test {
                     else throw new RuntimeException("Object 'feature' is not JSONArray or JSONObject in autolevelFormat");
                 }
             }
-         }
-     }
-
-     private void TestingTwo() {
-        TestClass ts = new TestClass();
-        Log.writel(ts.s);
-        TestingTwoPlus(ts);
-        Log.writel(ts.s);
-     }
-
-     private void TestingTwoPlus(TestClass ts) {
-         //ts.setS("Changed.");
-         ts = new TestClass();
-         ts.setS("Inside function.");
-         Log.writel(ts.s);
-     }
-
-     private class TestClass {
-         String s;
-
-         TestClass() {
-             s = "Hello.";
-         }
-
-         public void setS(String s) {
-             this.s = s;
          }
      }
 }

@@ -157,7 +157,7 @@ public class Database {
             }
             else {
                 for(int i = 0; i < indent; i++)
-                    Log.write("-");
+                    Log.write("<li>");
                 Log.writel(o.toString());
             }
         }
